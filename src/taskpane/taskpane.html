@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ExcelSmart Task Pane</title>
+    <link rel="stylesheet" href="taskpane.css" type="text/css" />
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <script type="text/javascript" src="taskpane.js"></script>
+  </head>
+
+  <body class="ms-font-m ms-welcome">
+    <main id="app-body" class="ms-welcome__main">
+      <h2 class="ms-font-xl">Welcome to ExcelSmart!</h2>
+      <p class="ms-font-l">Describe what you want to do, and I'll generate the formula.</p>
+
+      <div class="input-container">
+        <textarea id="prompt-input" rows="4" placeholder="e.g., Sum the values in column A if column B says 'Sales'"></textarea>
+      </div>
+
+      <button class="ms-Button" id="generate-button">Generate Formula</button>
+
+      <div id="result-container">
+        <h3>Suggested Formula:</h3>
+        <pre id="formula-output">...</pre>
+        <!-- NEW: "Apply" button and status text -->
+        <button class="ms-Button ms-Button--primary" id="apply-button">Apply to Active Cell</button>
+        <p id="status-text"></p>
+      </div>
+    </main>
+  </body>
+</html>
