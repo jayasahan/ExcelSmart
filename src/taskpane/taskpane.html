@@ -19,7 +19,12 @@
         <textarea id="prompt-input" rows="4" placeholder="e.g., Sum the values in column A if column B says 'Sales'"></textarea>
       </div>
 
-      <button class="ms-Button" id="generate-button">Generate Formula</button>
+      <!-- Find this button -->
+<button class="ms-Button" id="generate-button">
+  Generate Formula
+  <!-- Add this new element inside it -->
+  <span class="loader" id="loader"></span>
+</button>
 
       <div id="result-container">
         <h3>Suggested Formula:</h3>

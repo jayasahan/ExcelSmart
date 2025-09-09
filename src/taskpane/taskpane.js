@@ -3,6 +3,9 @@
  * See LICENSE in the project root for license information.
  */
 
+// --- NEW: Define UI elements at the top for easy access ---
+let generateButton, applyButton, loader, formulaOutput, statusText;
+
 Office.onReady((info) => {
   if (info.host === Office.HostType.Excel) {
     document.addEventListener("DOMContentLoaded", setupUI);
@@ -10,26 +13,45 @@ Office.onReady((info) => {
 });
 
 function setupUI() {
-  // Add event listeners to both buttons now
-  document.getElementById("generate-button").addEventListener("click", handleGenerateFormula);
-  document.getElementById("apply-button").addEventListener("click", applyFormula); // New listener
+  // Get references to all our interactive elements
+  generateButton = document.getElementById("generate-button");
+  applyButton = document.getElementById("apply-button");
+  loader = document.getElementById("loader");
+  formulaOutput = document.getElementById("formula-output");
+  statusText = document.getElementById("status-text");
+
+  // Add event listeners
+  generateButton.addEventListener("click", handleGenerateFormula);
+  applyButton.addEventListener("click", applyFormula);
+}
+
+// --- NEW: Helper function to manage the UI state ---
+function setLoadingState(isLoading) {
+  if (isLoading) {
+    generateButton.disabled = true;
+    applyButton.disabled = true;
+    loader.style.display = "inline-block"; // Show spinner
+    formulaOutput.textContent = "Generating...";
+    statusText.textContent = "";
+  } else {
+    generateButton.disabled = false;
+    applyButton.disabled = false;
+    loader.style.display = "none"; // Hide spinner
+  }
 }
 
 async function handleGenerateFormula() {
   const promptText = document.getElementById("prompt-input").value;
-  const formulaOutput = document.getElementById("formula-output");
-  const statusText = document.getElementById("status-text");
 
-  statusText.textContent = ""; // Clear previous status
   if (!promptText) {
     formulaOutput.textContent = "Please enter a description first.";
     return;
   }
-  formulaOutput.textContent = "Generating...";
+  
+  setLoadingState(true); // --- UX Change: Enter loading state ---
 
   try {
-    //const serverUrl = "http://localhost:3001/api/get-formula";   //For local run
-    const serverUrl = "https://excel-smart.vercel.app/api/get-formula";
+    const serverUrl = "https://excel-smart.vercel.app/api/get-formula"; // Your live Vercel URL
     const response = await fetch(serverUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -42,42 +64,30 @@ async function handleGenerateFormula() {
     formulaOutput.textContent = data.formula;
   } catch (error) {
     console.error("Failed to fetch formula:", error);
-    formulaOutput.textContent = "Error: Could not retrieve formula. Is the backend server running?";
+    formulaOutput.textContent = "Error: Could not retrieve formula.";
+  } finally {
+    setLoadingState(false); // --- UX Change: Exit loading state, no matter what happens ---
   }
 }
 
-// --- NEW FUNCTION TO WRITE TO EXCEL ---
 async function applyFormula() {
-  const formula = document.getElementById("formula-output").textContent;
-  const statusText = document.getElementById("status-text");
+  const formula = formulaOutput.textContent;
 
-  // 1. Check if there's a valid formula to apply
   if (!formula || formula === "..." || formula.startsWith("Error") || formula.startsWith("Generating")) {
-    statusText.textContent = "Please generate a valid formula first.";
+    statusText.textContent = "Generate a valid formula before applying.";
     return;
   }
 
   try {
-    // 2. Use Excel.run to execute a batch of commands against the workbook
     await Excel.run(async (context) => {
-      // 3. Get the currently selected cell (the "active cell")
       const cell = context.workbook.getActiveCell();
-
-      // 4. Set the formula of that cell
-      cell.formulas = [[formula]]; // Formulas are set as a 2D array
-
-      // 5. Load the cell's address to provide feedback
+      cell.formulas = [[formula]];
       cell.load("address");
-
-      // 6. context.sync() executes all the commands we've queued up (like a "commit")
       await context.sync();
-
-      // 7. Update the status text with the cell address
       statusText.textContent = `Formula applied to cell ${cell.address}!`;
     });
   } catch (error) {
-    // Handle any errors from the Excel.run operation
     console.error(error);
-    statusText.textContent = "Error: Could not apply formula to the cell.";
+    statusText.textContent = "Error: Could not apply formula to the selected cell.";
   }
 }

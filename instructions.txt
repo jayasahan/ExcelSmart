@@ -1,0 +1,20 @@
+Here are the instructions to give your beta testers:
+
+To Test with Excel on the Web (Easiest Method):
+
+Open Excel in your web browser (e.g., at office.com).
+ - Go to the Insert tab and click Add-ins.
+ -In the top right, select the MY ADD-INS tab.
+ -At the bottom of the window, click the "Upload My Add-in" link.
+ -Browse and select the manifest.xml file I sent you.
+ -The "ExcelSmart" add-in is now installed. You can open it from the Home tab on the ribbon.
+
+To Test with Excel on Windows Desktop:
+ -Create a folder on your computer, for example: C:\ExcelAddins.
+ -Place the manifest.xml file I sent you inside this folder.
+ -In Excel, go to File > Options > Trust Center > Trust Center Settings....
+ -Go to Trusted Add-in Catalogs.
+ -In the Catalog Url box, type the path to the folder you created (C:\ExcelAddins), click Add catalog, and make sure to check the "Show in Menu" box. Click OK.
+ -Now, on the Insert tab, click My Add-ins, and at the top, select SHARED FOLDER. Your ExcelSmart add-in will appear there.
+
+You are now fully equipped to run a beta test. You can start refining the AI prompt, improving the UI, and gathering valuable feedback for the next phase: a full production deployment.
