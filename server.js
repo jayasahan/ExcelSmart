@@ -48,8 +48,17 @@ app.post('/api/get-formula', async (req, res) => {
   }
 });
 
+
+
 // 8. Start the server
-const PORT = 3001; // We'll use a different port from the main add-in server
+
+// *** But as we use Vercel now(instead of render)An always-on server using app.listen() doesn't work in a serverless environment. Instead, we need to export the app object for Vercel to use.
+/*const PORT = 3001; // We'll use a different port from the main add-in server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+*/
+
+
+// To make it vercel redy
+module.exports = app;
