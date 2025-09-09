@@ -28,7 +28,8 @@ async function handleGenerateFormula() {
   formulaOutput.textContent = "Generating...";
 
   try {
-    const serverUrl = "http://localhost:3001/api/get-formula";
+    //const serverUrl = "http://localhost:3001/api/get-formula";   //For local run
+    const serverUrl = "https://excel-smart.vercel.app/api/get-formula";
     const response = await fetch(serverUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
