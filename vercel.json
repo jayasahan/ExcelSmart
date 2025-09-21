@@ -4,11 +4,19 @@
     {
       "src": "package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "public" }
+      "config": {
+        "distDir": "public"
+      }
     },
     {
-      "src": "api/**/*.js",
+      "src": "api/get-formula.js",
       "use": "@vercel/node"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/get-formula",
+      "destination": "/api/get-formula.js"
     }
   ]
 }
