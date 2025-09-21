@@ -3,6 +3,18 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // This is the main handler function for the serverless endpoint
 module.exports = async (req, res) => {
+  // --- NEW: SET CORS HEADERS ---
+  // This allows your Vercel domain to be accessed by the add-in.
+  res.setHeader('Access-Control-Allow-Origin', 'https://excel-smart.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle pre-flight requests (sent by browsers to check permissions)
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+  // --- END OF NEW SECTION ---
+
   // 1. Check if the request is a POST request.
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
