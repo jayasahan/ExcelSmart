@@ -1,3 +1,14 @@
+To let someone else test your add-in, you need to give them the manifest.xml file. This file is the key. It tells Excel everything it needs to know about your add-in, including where to load its content from.
+How it works (for beta testing):
+Your backend is live on Vercel. (Done!)
+Your frontend (taskpane.html, etc.) is served securely from https://localhost:3000 when you run npm start.
+You run npm start on your computer.
+You send the manifest.xml file to your friend.
+Your friend "sideloads" this file into their Excel (instructions below).
+When they open the add-in, their Excel will load the user interface directly from your localhost:3000 server over the internet.
+Limitation: This method requires your development server to be running for them to use the add-in. A full deployment (our next phase) will remove this dependency.
+
+
 Here are the instructions to give your beta testers:
 
 To Test with Excel on the Web (Easiest Method):

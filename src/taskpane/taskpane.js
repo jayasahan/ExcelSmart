@@ -51,7 +51,8 @@ async function handleGenerateFormula() {
   setLoadingState(true); // --- UX Change: Enter loading state ---
 
   try {
-    const serverUrl = "https://excel-smart.vercel.app/api/get-formula"; // Your live Vercel URL
+    // The URL now points to our file inside the /api/ folder
+    const serverUrl = "/api/get-formula";
     const response = await fetch(serverUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
